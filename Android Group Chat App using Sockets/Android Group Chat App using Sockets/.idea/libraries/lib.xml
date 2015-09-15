@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="lib">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/WebMobileGroupChatServer/WebContent/WEB-INF/lib/javaee-api-7.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WebMobileGroupChatServer/WebContent/WEB-INF/lib/google-collections-0.8.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WebMobileGroupChatServer/WebContent/WEB-INF/lib/json-org.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="dexedLibs">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/WebMobileGroupChat/bin/dexedLibs/android-support-v4-8366048fe292046fc9bc1363e6b8f9b7.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WebMobileGroupChat/bin/dexedLibs/annotations-de63951259cd04b91928888915d222c8.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WebMobileGroupChat/bin/dexedLibs/android-websockets-master-f328491cb4cbc7c06e856deb63033bad.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WebMobileGroupChat/bin/dexedLibs/appcompat_v7-e987672ed7cc9cc33a368f114ee95ec1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WebMobileGroupChat/bin/dexedLibs/android-support-v7-appcompat-9d3b91f62a703e943b22d833a166fc9b.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

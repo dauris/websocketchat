@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/WebMobileGroupChat/WebMobileGroupChat.iml" filepath="$PROJECT_DIR$/WebMobileGroupChat/WebMobileGroupChat.iml" />
+      <module fileurl="file://$PROJECT_DIR$/WebMobileGroupChatServer/WebMobileGroupChatServer.iml" filepath="$PROJECT_DIR$/WebMobileGroupChatServer/WebMobileGroupChatServer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/android-websockets-master/android-websockets-master.iml" filepath="$PROJECT_DIR$/android-websockets-master/android-websockets-master.iml" />
+    </modules>
+  </component>
+</project>
