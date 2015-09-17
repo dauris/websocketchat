@@ -26,4 +26,25 @@ public class MsgListAdapter extends BaseAdapter {
 	public int getCount(){
 		return msgItems.size();
 	}
+	
+	@Override
+	public Object getItem(int position) {
+		return msgItems.get(position);
+	}
+	
+	@Override
+	public long getItemId(int position) {
+		return position;
+	}
+	
+	@SuppressLint("InflateParams")
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent) {
+		/**
+		 * The following list not implement reusable list items as list items are showing incorrect data.
+		 * Add the solution if you have one
+		 */
+		return convertView;
+	}
+	
 }
