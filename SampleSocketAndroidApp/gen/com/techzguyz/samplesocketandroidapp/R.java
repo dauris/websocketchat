@@ -44,10 +44,16 @@ public final class R {
         public static final int tile_bg=0x7f020004;
     }
     public static final class id {
-        public static final int action_settings=0x7f090003;
-        public static final int btnJoin=0x7f090002;
-        public static final int imgLogo=0x7f090000;
-        public static final int name=0x7f090001;
+        public static final int action_settings=0x7f090009;
+        public static final int btnJoin=0x7f090006;
+        public static final int btnSend=0x7f090003;
+        public static final int imgLogo=0x7f090004;
+        public static final int inputMsg=0x7f090002;
+        public static final int lblMsgFrom=0x7f090007;
+        public static final int list_view_messages=0x7f090000;
+        public static final int llMsgCompose=0x7f090001;
+        public static final int name=0x7f090005;
+        public static final int txtMsg=0x7f090008;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
@@ -66,6 +72,7 @@ public final class R {
         public static final int author_url=0x7f060003;
         public static final int btn_join=0x7f060005;
         public static final int btn_send=0x7f060006;
+        public static final int emptyHold=0x7f060009;
         public static final int enter_name=0x7f060004;
         public static final int title=0x7f060001;
     }

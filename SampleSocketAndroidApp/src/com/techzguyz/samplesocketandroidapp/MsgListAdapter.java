@@ -44,6 +44,25 @@ public class MsgListAdapter extends BaseAdapter {
 		 * The following list not implement reusable list items as list items are showing incorrect data.
 		 * Add the solution if you have one
 		 */
+		
+		Msg m = msgItems.get(position);
+		LayoutInflater mInflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+		
+		//Identifying the message owner
+		if(msgItems.get(position).isSelf()) {
+			//message belongs to you, so load the right aligned
+			convertView = mInflater.inflate(R.layout.list_item_msg_r, null);
+		} else {
+			//message belongs to you, so load the right aligned
+			convertView = mInflater.inflate(R.layout.list_item_msg_l, null);
+		}
+		
+		TextView lblFrom = (TextView) convertView.findViewById(R.id.lblMsgFrom);
+		TextView txtMsg = (TextView) convertView.findViewById(R.id.txtMsg);
+		
+		txtMsg.setText(m.getMsg());
+		lblFrom.setText(m.getFromName());
+		
 		return convertView;
 	}
 	
