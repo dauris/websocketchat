@@ -83,7 +83,9 @@ public class MainActivity extends Activity {
         
         msgAdapter = new MsgListAdapter(this, listMsges);
         listVMsg.setAdapter(msgAdapter);
-        
+        /**
+         * Creating web socket client. This will have callback methods
+         */
         client = new WebSocketClient(URI.create(WsConfig.URL_WEBSOCKET + URLEncoder.encode(name)), new WebSocketClient.Listener() {
 			
 			@Override
@@ -106,7 +108,7 @@ public class MainActivity extends Activity {
 			@Override
 			public void onError(Exception error) {
 				// TODO Auto-generated method stub
-				
+				Log.e(TAG, "Error! ");
 			}
 			
 			@Override
@@ -114,7 +116,7 @@ public class MainActivity extends Activity {
 				// TODO Auto-generated method stub
 				String msg = String.format(Locale.US, "Disconnected! Code: %d Reason: %s", code, reason);
 	        	
-	        	showToast(message);
+	        	showToast(msg);
 	        	
 	        	//clear the session id from shared preferences
 	        	utils.storeSessionId(null);
@@ -129,51 +131,124 @@ public class MainActivity extends Activity {
 		}, null);
         client.connect();
     }
-        
-        
-        /**
-         * On receiving the message from web socket server
-         */
-        @Override
-        public void onMsg(String message) {
-        	
-        }
-        
-        @Override
-        public void onMsg(byte[] data) {
-        	
-        }
-        
-        /**
-         * Called when the connection is terminated
-         */
-        @Override
-        public void onDisconnect(int code, String reason) {
-        	
-        }
-        
-        @Override
-        public void onError(Exception error) {
-        	
-        }
+    
+    /**
+     * Method to send message to web socket server
+     */
+    private void sendMessageToServer(String msg) {
+    	if(client != null && client.isConnected()){
+    		client.send(msg);
+    	}
+    }
+    
+    /**
+     * Parsing the JSON message received from the server the intent of message will be identified by JSON node 'flag'.
+     * flag = self, message belongs to the person. flag = new, a new person joined the conversation. flag = message, a new
+     * message received from the server. flag = exit, somebody left the conversation.
+     */
+    private void parseMessage(final String msg2) {
+    	try	{
+    		JSONObject jObj = new JSONObject(msg2);
+    		
+    		//JSON node 'flag'
+    		String flag = jObj.getString("flag");
+    		
+    		//if the flag is 'self', this Json contains session id
+    		if(flag.equalsIgnoreCase(Tag_Self)) {
+    			String sessionId = jObj.getString("sessionId");
+    			
+    			//Save the session id in shared preferences
+    			utils.storeSessionId(sessionId);
+    			Log.e(TAG, "Your session id: " + utils.getSessionId());
+    		} else if(flag.equalsIgnoreCase(Tag_New)) {
+    			//if the flag is 'new', new person joined the room
+    			String name = jObj.getString("name");
+    			String message = jObj.getString("message");
+    			
+    			//number of people online
+    			String onlineCount = jObj.getString("onlineCount");
+    			
+    			showToast(name + message + ". Currently " + onlineCount + " people online!");
+    		} else if(flag.equalsIgnoreCase(Tag_MSG)){
+    			//if the flag is 'message', new message received
+    			String fromName = name;
+    			String message = jObj.getString("message");
+    			String sessionId = jObj.getString("sessionId");
+    			boolean isSelf =true;
+    			
+    			//checking if the message was sent by you
+    			if(!sessionId.equals(utils.getSessionId())){
+    				fromName = jObj.getString("name");
+    			}
+    			Msg m = new Msg(fromName, message, isSelf);
+    			
+    			//appending the message to chat list
+    			appendMsg(m);
+    		} else if (flag.equalsIgnoreCase(Tag_Exit)){
+    			// If the flag is 'exit', somebody left the conversation
+                String name = jObj.getString("name");
+                String message = jObj.getString("message");
+                
+    			showToast(name + message);
+    		}
+    	} catch (JSONException e) {
+    		e.printStackTrace();
+    	}
+    }
+    
+    @Override 
+    protected void onDestroy(){
+    	super.onDestroy();
+    	
+    	if (client != null & client.isConnected()){
+    		client.disconnect();
+    	}
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
+    private void appendMsg(final Msg m) {
+    	runOnUiThread(new Runnable(){
+    		@Override
+    		public void run() {
+    			listMsges.add(m);
+    			
+    			msgAdapter.notifyDataSetChanged();
+    			//playing device's notification
+    			playBeep();
+    		}
+    	});
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+    /**
+     * will play the device default notification sound
+     */
+    public void playBeep(){
+    	try {
+    		Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+    		Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
+    		r.play();
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    	}
+    }
+    
+    final protected static char[] hexArray = "".toCharArray();
+    
+    public static String bytesToHex(byte[] bytes) {
+    	char[] hexChars = new char[bytes.length * 2];
+    	for (int j = 0; j<bytes.length; j++) {
+    		int v = bytes[j] & 0xFF;
+    		hexChars[j * 2] = hexArray[v >>> 4];
+    		hexChars[j * 2 + 1] = hexArray[v & 0x0F];
+    	}
+    	return new String(hexChars);
+    }
+    
+    private void showToast(final String msg){
+    	runOnUiThread(new Runnable(){
+    		@Override
+    		public void run(){
+    			Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+    		}
+    	});
     }
 }

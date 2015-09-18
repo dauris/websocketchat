@@ -46,7 +46,7 @@ function openSocket() {
         return;
     }
  
-    // Create a new instance of the websocket
+    // Create a new instance of the web socket
     webSocket = new WebSocket("ws://" + socket_url + ":" + port
             + "/Sample_Socket_Project/chat?name=" + name);
  
